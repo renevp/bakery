@@ -1,10 +1,10 @@
 require_relative '../lib/bakery'
 
 describe Bakery do
-  it "load product's packs" do
+  it "load products products" do
     bakery = Bakery.new()
-    packs = bakery.load_packs()
-    expect(packs.size).to equal(3)
+    products = bakery.load_products()
+    expect(products.size).to equal(3)
   end
   context 'Given a customer order' do
     it 'determines the cost and pack breakdown for each product'
