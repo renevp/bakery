@@ -7,6 +7,6 @@ class OrderProcessing
   end
 
   def resolve
-    print '10 VS5 $17.98 - 2 x 5 $8.99'
+    print "10 VS5 $17.98 \n\t 2 x 5 $8.99"
   end
 end

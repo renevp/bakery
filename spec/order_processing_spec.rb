@@ -13,7 +13,7 @@ describe OrderProcessing do
 
   it "determines breakdown packs and subtotal" do
     order_processing = OrderProcessing.new(order, products)
-    expect { order_processing.resolve() }.to output('10 VS5 $17.98 - 2 x 5 $8.99').to_stdout
+    expect { order_processing.resolve() }.to output("10 VS5 $17.98 \n\t 2 x 5 $8.99").to_stdout
   end
 
   it "calculates total cost"
