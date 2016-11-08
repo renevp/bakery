@@ -47,4 +47,8 @@ class Products
   def filter(code)
     products.select {|product| product.code == code}
   end
+
+  def size
+    products.size
+  end
 end
