@@ -1,24 +1,25 @@
-require_relative "../lib/products"
+require_relative '../lib/products'
+require_relative '../helpers/file_utils'
 
 describe Products do
-  let(:products_data) { Utils.read_csv('./spec/fixtures/products.csv')}
-  let(:packs_data) { Utils.read_csv('./spec/fixtures/packs.csv')}
-  let(:products) { ProductPacksFactory.build(products_data, packs_data)}
+  let(:products_data) { FileUtils.read_csv('./spec/fixtures/products.csv')}
+  let(:packs_data) { FileUtils.read_csv('./spec/fixtures/packs.csv')}
+  let(:object) { ProductsPacksFactory.build(products_data, packs_data)}
 
   it "retrieves all products" do
-    expect(products.size).to equal(3)
+    expect(object.products.size).to eq(3)
   end
 
   it "includes product packs" do
-    expect(products[0]).to respond_to(:packs)
+    expect(object.products[0]).to respond_to(:packs)
   end
 
   it "has packs with quantity and price" do
-    expect(products[0].packs[0].to_h).to include(:quantity, :price, :code)
+    expect(object.products[0].packs[0].to_h).to include(:quantity, :price, :code)
   end
 
   it "filters products by code" do
-    filtered = Products.new(products).filter('CF')
+    filtered = object.filter('CF')
     expect(filtered[0].code).to eq('CF')
   end
 end

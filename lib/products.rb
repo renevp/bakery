@@ -1,20 +1,13 @@
-require 'csv'
 require 'ostruct'
 
-module Utils
-  def self.read_csv(csv_file)
-    rows = CSV.read csv_file, headers: true, skip_blanks: true, header_converters: :symbol
-  end
-end
-
-module ProductPacksFactory
-  def self.build(products_data, packs_data, product_class = Product)
+module ProductsPacksFactory
+  def self.build(products_data, packs_data, products_class = Products)
     products = Array.new
     products_data.each do |product|
-      products << product_class.new(product[:name], product[:code],
+      products << Product.new(product[:name], product[:code],
         (packs_data.collect {|pack| create_pack(pack, product) }).compact)
     end
-    products
+    products_class.new(products)
   end
 
   def self.create_pack(pack, product)
