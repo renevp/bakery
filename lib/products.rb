@@ -20,7 +20,7 @@ module ProductPacksFactory
   def self.create_pack(pack, product)
     if pack[:code] == product[:code]
       OpenStruct.new(
-        # code:     pack[:code],
+        code:     pack[:code],
         quantity: pack[:quantity],
         price:    pack[:price])
     end

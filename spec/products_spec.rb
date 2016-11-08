@@ -14,7 +14,7 @@ describe Products do
   end
 
   it "has packs with quantity and price" do
-    expect(products[0].packs[0].to_h).to include(:quantity, :price)
+    expect(products[0].packs[0].to_h).to include(:quantity, :price, :code)
   end
 
   it "filters products by code" do
