@@ -7,63 +7,82 @@ class OrderProcessing
   end
 
   def make_order()
-    args = prepare()
-    make_order_line(args[0], args[1], args[2], args[3], args[4])
+    order.order_items.each do |item|
+      quantity_list, number_items, pack_list = prepare(item)
+      min_packs = determine_packs(quantity_list, number_items)
+      puts min_packs
+      puts determine_subtotal(min_packs, pack_list)
+    end
   end
 
   private
 
-  def prepare()
-    pack_list = products.filter(order.order_items[0].code)[0].packs
-    quantity_list, price_list = pack_quantity_price_values(pack_list)
-    number_items = order.order_items[0].quantity.to_i
-    min_packs = Array.new(number_items, 0)
-    packs_used = Array.new(number_items, 0)
-    [quantity_list, price_list, number_items, min_packs, packs_used]
+  def prepare(item)
+    code = item.code
+    puts code
+    pack_list = products.filter(code)[0].packs
+    quantity_list = pack_quantity_values(pack_list)
+    number_items = item.quantity
+    [quantity_list, number_items, pack_list]
   end
 
-  def make_order_line(quantity_list, price_list, number_items, min_packs, packs_used)
+  def determine_packs(quantity_list, number_items)
     puts number_items
-    print quantity_list
-    print price_list
-    print min_packs
-
+    min_packs = Array.new(number_items, 0)
+    packs_used = Array.new(number_items, 0)
     (0..number_items).to_a.each do |unit|
       unit_count = unit
       new_unit = 1
-      valid_quantities = quantity_list.select { |quantity| quantity <= number_items }
+      valid_quantities = quantity_list.select { |quantity| quantity <= unit }
+      # print valid_quantities
       valid_quantities.each do |q|
+        # puts " Q: ", q
         if min_packs[unit - q] + 1 < unit_count
-          unit_count = min_packs[unit - q] + 1
+          unit_count = min_packs[ unit - q ] + 1
           new_unit = q
-          puts unit_count
         end
       end
       min_packs[unit] = unit_count
+      # print min_packs[unit]
       packs_used[unit] = new_unit
+      # print packs_used[unit]
     end
-    print min_packs[number_items]
-    print packs_used
-    print_packs(packs_used, number_items)
-    print "10 VS5 $17.98 \n\t 2 x 5 $8.99"
+    # print "Min number packs", min_packs[number_items]
+    minimal_packs(packs_used, number_items)
   end
 
-  def print_packs(packs_used, number_items)
+  def minimal_packs(packs_used, number_items)
+    packs = Hash.new
     unit = number_items
     while unit > 0
       this_unit = packs_used[unit]
-      print(this_unit)
+      if packs.has_key?(this_unit)
+        packs[this_unit] += 1
+      else
+        packs[this_unit] = 1
+      end
       unit = unit - this_unit
     end
+    packs
   end
 
-  def pack_quantity_price_values(pack_list)
-    quantity_list = Array.new
-    price_list = Array.new
+  def determine_subtotal(min_packs, pack_list)
+    subtotal = 0
     pack_list.each do |pack|
-      quantity_list << pack.quantity.to_i
-      price_list << pack.price.to_f
+      min_packs.each_pair do |quantity, times|
+        if pack.quantity == quantity
+          subtotal += pack.price * times
+        end
+      end
     end
-    [quantity_list, price_list]
+    subtotal.round(2)
+  end
+
+  def pack_quantity_values(pack_list)
+    quantity_list = Array.new
+    pack_list.each do |pack|
+      quantity_list << pack.quantity
+    end
+    quantity_list
   end
 end
