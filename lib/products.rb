@@ -14,8 +14,8 @@ module ProductsPacksFactory
     if pack[:code] == product[:code]
       OpenStruct.new(
         code:     pack[:code],
-        quantity: pack[:quantity],
-        price:    pack[:price])
+        quantity: pack[:quantity].to_i,
+        price:    pack[:price].to_f)
     end
   end
 end

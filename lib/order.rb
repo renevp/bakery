@@ -8,7 +8,7 @@ module OrderFactory
   def self.create_item(item)
     OpenStruct.new(
       code:     item[:code],
-      quantity: item[:quantity])
+      quantity: item[:quantity].to_i)
   end
 end
 
