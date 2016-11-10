@@ -1,5 +1,6 @@
-require_relative '../lib/order'
 require_relative '../helpers/file_utils'
+require_relative '../lib/order'
+require_relative '../lib/order_factory'
 
 describe Order do
   let(:order_data) { FileUtils.read_csv('./spec/fixtures/order.csv') }

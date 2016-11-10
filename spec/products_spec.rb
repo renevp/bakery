@@ -1,5 +1,7 @@
-require_relative '../lib/products'
 require_relative '../helpers/file_utils'
+require_relative '../lib/products'
+require_relative '../lib/product'
+require_relative '../lib/products_packs_factory'
 
 describe Products do
   let(:products_data) { FileUtils.read_csv('./spec/fixtures/products.csv')}
