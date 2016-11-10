@@ -1,6 +1,8 @@
 require 'ostruct'
 
 module ProductsPacksFactory
+  MIN_QTY_PER_PACK = 1
+
   def self.build(products_data, packs_data, products_class = Products)
     products = Array.new
     products_data.each do |product|
@@ -11,7 +13,10 @@ module ProductsPacksFactory
   end
 
   def self.create_pack(pack, product)
-    if pack[:code] == product[:code]
+    unless pack[:code] != product[:code] ||
+      pack[:quantity].to_i < MIN_QTY_PER_PACK ||
+      pack[:code].strip.empty? ||
+      product[:code].strip.empty?
       OpenStruct.new(
         code:     pack[:code],
         quantity: pack[:quantity].to_i,
