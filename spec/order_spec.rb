@@ -13,7 +13,7 @@ describe Order do
     expect(order.order_items.size).to eq(3)
   end
 
-  it "has packs with quantity and price" do
+  it "has order lines with quantity and code" do
     expect(order.order_items[0].to_h).to include(:quantity, :code)
   end
 end
