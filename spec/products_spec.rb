@@ -4,9 +4,9 @@ require_relative '../lib/product'
 require_relative '../lib/products_packs_factory'
 
 describe Products do
-  let(:products_data) { FileUtils.read_csv('./spec/fixtures/products.csv')}
-  let(:packs_data) { FileUtils.read_csv('./spec/fixtures/packs.csv')}
-  let(:object) { ProductsPacksFactory.build(products_data, packs_data)}
+  let(:products_data) { FileUtils.read_csv('./spec/fixtures/products.csv') }
+  let(:packs_data)    { FileUtils.read_csv('./spec/fixtures/packs.csv') }
+  let(:object)        { ProductsPacksFactory.new(products_data, packs_data).build() }
 
   it "retrieves all products" do
     expect(object.products.size).to eq(3)

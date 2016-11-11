@@ -5,7 +5,8 @@ require_relative '../lib/order_item'
 
 describe Order do
   let(:order_data) { FileUtils.read_csv('./spec/fixtures/order.csv') }
-  let(:order) { OrderFactory.build(order_data) }
+  let(:order)      { OrderFactory.new(order_data).build() }
+
 
   it "includes order items" do
     expect(order).to respond_to(:items)

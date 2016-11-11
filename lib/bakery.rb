@@ -18,12 +18,12 @@ class Bakery
   def load_products
     products_data = FileUtils.read_csv('./inputs/products.csv')
     packs_data    = FileUtils.read_csv('./inputs/packs.csv')
-    products      = ProductsPacksFactory.build(products_data, packs_data)
+    products      = ProductsPacksFactory.new(products_data, packs_data).build()
   end
 
   def get_order
     order_data = FileUtils.read_csv('./inputs/order.csv')
-    order      = OrderFactory.build(order_data)
+    order      = OrderFactory.new(order_data).build()
   end
 
   def main

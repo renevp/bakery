@@ -4,9 +4,9 @@ require_relative '../lib/product'
 require_relative '../lib/order_line_processing'
 
 describe OrderLineProcessing do
-  let(:product) { FactoryGirl.build(:product) }
-  let(:items_valid) { FactoryGirl.build(:order) }
-  let(:invalid) { [OrderItem.new(1,'MB11')] }
+  let(:product)       { FactoryGirl.build(:product) }
+  let(:items_valid)   { FactoryGirl.build(:order) }
+  let(:invalid)       { [OrderItem.new(1,'MB11')] }
   let(:items_invalid) { FactoryGirl.attributes_for(:order, items: invalid) }
 
   it "rejects order lines with number of items less than minimum quantity packs" do

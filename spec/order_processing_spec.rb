@@ -10,12 +10,12 @@ require_relative '../lib/order_line_processing'
 
 
 describe OrderProcessing do
-  let(:products_data) { FileUtils.read_csv('./spec/fixtures/products.csv')}
-  let(:packs_data) { FileUtils.read_csv('./spec/fixtures/packs.csv')}
-  let(:products) { ProductsPacksFactory.build(products_data, packs_data)}
+  let(:products_data) { FileUtils.read_csv('./spec/fixtures/products.csv') }
+  let(:packs_data)    { FileUtils.read_csv('./spec/fixtures/packs.csv') }
+  let(:products)      { ProductsPacksFactory.new(products_data, packs_data).build() }
+  let(:order_data)    { FileUtils.read_csv('./spec/fixtures/order.csv') }
+  let(:order)         { OrderFactory.new(order_data).build() }
 
-  let(:order_data) { FileUtils.read_csv('./spec/fixtures/order.csv') }
-  let(:order) { OrderFactory.build(order_data) }
 
   it "determines breakdown packs and subtotal for each line" do
     order_processing = OrderProcessing.new(order, products)
