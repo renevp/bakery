@@ -15,12 +15,10 @@ class OrderLineProcessing
 
     loop do
       if current >= items.count
-        current = next_iteration()
+        current = start_over()
         return "invalid input" if !current
       end
-
       calculate_quantity_for_item(current)
-
       current += 1
       break if first_result_founded?
     end
@@ -42,7 +40,7 @@ class OrderLineProcessing
     @results[current] = calculate_results(current)
   end
 
-  def next_iteration
+  def start_over
     @remaining = max_items
     flag       = true
     current    = 0

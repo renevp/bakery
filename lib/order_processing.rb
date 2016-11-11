@@ -10,8 +10,8 @@ class OrderProcessing
   def process
     order.items.each do |item|
       prepare(item)
-      @result = process_item
-      print_output
+      @result = process_item()
+      print_output()
     end
   end
 
@@ -27,7 +27,7 @@ class OrderProcessing
   def prepare(item)
     @code      = item.code
     @pack_list = products.filter(@code)[0].packs
-    @qty_list  = pack_qty_values
+    @qty_list  = pack_qty_values()
     @num_items = item.quantity
   end
 
@@ -48,7 +48,7 @@ class OrderProcessing
   end
 
   def print_output
-    subtotal = determine_subtotal
+    subtotal = determine_subtotal()
     print "#{@num_items} #{@code} $#{subtotal}\n"
     @result.each_pair do |quantity, times|
       print_breakdown(quantity, times)
