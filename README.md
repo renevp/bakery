@@ -9,6 +9,8 @@ $ bundle
 
 ## Testing
 $ rspec spec/order_processing.rb
+or
+$ rspec
 
 ## Run
 $ ruby lib/bakery.rb
