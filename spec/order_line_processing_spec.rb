@@ -26,7 +26,7 @@ describe OrderLineProcessing do
     let(:items) { [OrderItem.new(11,'MB11')] }
     let(:order) { FactoryGirl.attributes_for(:order, items: items) }
 
-    it "determine breakdown packs and subtotal for one line" do
+    it "determines breakdown packs and subtotal for one line" do
       quantity = order[:items][0].quantity
       results = process_line(quantity, product[:packs])
       expect(results).to eq([[23, 15, 4, 3], [0, 0, 2, 1]])
