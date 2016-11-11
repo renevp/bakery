@@ -1,7 +1,13 @@
 require_relative '../helpers/file_utils'
 require_relative '../lib/order'
+require_relative '../lib/order_item'
+require_relative '../lib/order_factory'
+require_relative '../lib/product'
 require_relative '../lib/products'
+require_relative '../lib/products_packs_factory'
 require_relative '../lib/order_processing'
+require_relative '../lib/order_line_processing'
+
 
 describe OrderProcessing do
   let(:products_data) { FileUtils.read_csv('./spec/fixtures/products.csv')}
@@ -16,5 +22,4 @@ describe OrderProcessing do
     expect { order_processing.make_order() }.to output("10 VS5 $17.98 \n\t 2 x 5 $8.99").to_stdout
   end
 
-  it "calculates total cost"
 end

@@ -3,17 +3,17 @@ require 'ostruct'
 module ProductsPacksFactory
   MIN_QTY_PER_PACK = 1
 
-  def self.build(products_data, packs_data)
+  def self.build(products_data, packs_data, product_class=Product, products_class=Products)
     products = products_data.collect do |product|
-      create_product(packs_data, product)
+      create_product(packs_data, product, product_class)
     end
-    Products.new(products) if products.count > 0
+    products_class.new(products) if products.count > 0
   end
 
   private
 
-  def self.create_product(packs_data, product)
-    Product.new(product[:name], product[:code], create_packs(packs_data, product))
+  def self.create_product(packs_data, product, product_class)
+    product_class.new(product[:name], product[:code], create_packs(packs_data, product))
   end
 
   def self.create_packs(packs_data, product)

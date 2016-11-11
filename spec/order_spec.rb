@@ -1,6 +1,7 @@
 require_relative '../helpers/file_utils'
-require_relative '../lib/order'
 require_relative '../lib/order_factory'
+require_relative '../lib/order'
+require_relative '../lib/order_item'
 
 describe Order do
   let(:order_data) { FileUtils.read_csv('./spec/fixtures/order.csv') }
@@ -14,7 +15,7 @@ describe Order do
     expect(order.order_items.size).to eq(3)
   end
 
-  it "has order lines with quantity and code" do
-    expect(order.order_items[0].to_h).to include(:quantity, :code)
+  it "has order items with quantity and code" do
+    expect(order.order_items[0]).to have_attributes(quantity: 10, code: "VS5")
   end
 end
