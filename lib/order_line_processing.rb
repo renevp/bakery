@@ -1,5 +1,4 @@
 class OrderLineProcessing
-
   attr_accessor :max_items, :items
 
   def initialize(max_items, items)

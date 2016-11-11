@@ -1,4 +1,4 @@
-# Bakery 
+# Bakery
 (Coding Challenge)
 
 ## Requirements
@@ -8,4 +8,7 @@ Tested in Ruby 2.3.1
 $ bundle
 
 ## Testing
-rspec spec/order_processing.rb
+$ rspec spec/order_processing.rb
+
+## Run
+$ ruby lib/bakery.rb

@@ -1,7 +1,7 @@
 class Order
-  attr_accessor :order_items
+  attr_accessor :items
 
-  def initialize(order_items)
-    @order_items = order_items
+  def initialize(items)
+    @items = items
   end
 end

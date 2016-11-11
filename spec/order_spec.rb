@@ -8,14 +8,14 @@ describe Order do
   let(:order) { OrderFactory.build(order_data) }
 
   it "includes order items" do
-    expect(order).to respond_to(:order_items)
+    expect(order).to respond_to(:items)
   end
 
   it "retrieves all order items" do
-    expect(order.order_items.size).to eq(3)
+    expect(order.items.size).to eq(3)
   end
 
   it "has order items with quantity and code" do
-    expect(order.order_items[0]).to have_attributes(quantity: 10, code: "VS5")
+    expect(order.items[0]).to have_attributes(quantity: 10, code: "VS5")
   end
 end
