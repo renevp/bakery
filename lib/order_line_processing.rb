@@ -12,7 +12,6 @@ class OrderLineProcessing
     return "invalid input" unless is_items_ok?
     @remaining  = max_items
     current     = 0
-
     loop do
       if current >= items.count
         current = start_over()
@@ -47,8 +46,7 @@ class OrderLineProcessing
     i          = 0
     while( i <= items.count && flag == true )
       if  @quantities[i] > 0
-        @quantities[i] -= 1
-        @remaining     -= calculate_results(i)
+        substract_quantity_for_item(i)
         current         = i + 1
         flag            = false
       end
@@ -57,6 +55,11 @@ class OrderLineProcessing
       return false if i >= items.count
     end
     current
+  end
+
+  def substract_quantity_for_item(i)
+    @quantities[i] -= 1
+    @remaining     -= calculate_results(i)
   end
 
   def total
