@@ -8,8 +8,6 @@ Tested in Ruby 2.3.1
 $ bundle
 
 ## Testing
-$ rspec spec/order_processing.rb
-or
 $ rspec
 
 ## Run
