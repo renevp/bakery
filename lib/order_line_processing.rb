@@ -18,13 +18,9 @@ class OrderLineProcessing
         current = next_iteration()
         return "invalid input" if !current
       end
-      if @remaining >= items[current]
-         @quantities[current] = calculate_quantity(current)
-         @remaining          -= calculate_results(current)
-      else
-         @quantities[current] = 0
-      end
-      @results[current] = calculate_results(current)
+
+      calculate_quantity_for_item(current)
+
       current += 1
       break if first_result_founded?
     end
@@ -35,6 +31,16 @@ class OrderLineProcessing
   end
 
   private
+
+  def calculate_quantity_for_item(current)
+    if @remaining >= items[current]
+       @quantities[current] = calculate_quantity(current)
+       @remaining          -= calculate_results(current)
+    else
+       @quantities[current] = 0
+    end
+    @results[current] = calculate_results(current)
+  end
 
   def next_iteration
     @remaining = max_items
