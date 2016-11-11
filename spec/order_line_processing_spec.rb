@@ -4,13 +4,6 @@ require_relative '../lib/product'
 require_relative '../lib/order_line_processing'
 
 describe OrderLineProcessing do
-
-  def process_line(quantity, packs)
-    line_processing = OrderLineProcessing.new(quantity, packs)
-    line_processing.process_order_line
-    results = line_processing.results
-  end
-
   let(:product) { FactoryGirl.build(:product) }
   let(:items_valid) { FactoryGirl.build(:order) }
   let(:invalid) { [OrderItem.new(1,'MB11')] }
@@ -38,5 +31,11 @@ describe OrderLineProcessing do
       results = process_line(quantity, product[:packs])
       expect(results).to eq([[23, 15, 4, 3], [0, 0, 2, 1]])
     end
+  end
+
+  def process_line(quantity, packs)
+    line_processing = OrderLineProcessing.new(quantity, packs)
+    line_processing.process_order_line
+    results = line_processing.results
   end
 end
