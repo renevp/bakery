@@ -9,8 +9,7 @@ describe OrderLineProcessing do
   let(:invalid) { [OrderItem.new(1,'MB11')] }
   let(:items_invalid) { FactoryGirl.attributes_for(:order, items: invalid) }
 
-  it "rejects order lines with number of items less than minimum quantity in
-   packs" do
+  it "rejects order lines with number of items less than minimum quantity packs" do
    quantity = items_invalid[:items][0].quantity
    line_processing = OrderLineProcessing.new(quantity, product.packs)
    line_processing.process_order_line
