@@ -17,9 +17,10 @@ describe OrderProcessing do
   let(:order_data) { FileUtils.read_csv('./spec/fixtures/order.csv') }
   let(:order) { OrderFactory.build(order_data) }
 
-  it "determines breakdown packs and subtotal for one line" do
+  it "determines breakdown packs and subtotal for each line" do
     order_processing = OrderProcessing.new(order, products)
-    expect { order_processing.make_order() }.to output("10 VS5 $17.98 \n\t 2 x 5 $8.99").to_stdout
+    output_expected = "10 VS5 $17.98\n\t 2 x 5 $8.99\n14 MB11 $53.8\n\t 2 x 5 $16.95\n\t 2 x 2 $9.95\n13 CF $25.85\n\t 2 x 5 $9.95\n\t 1 x 3 $5.95\n"
+    expect { order_processing.process() }.to output(output_expected).to_stdout
   end
 
 end

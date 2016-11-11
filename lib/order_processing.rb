@@ -1,42 +1,44 @@
 class OrderProcessing
-  attr_accessor :order, :products, :line_processing
+  attr_accessor :order, :products, :line_processing_class
 
   def initialize(order, products, line_processing_class = OrderLineProcessing)
     @order = order
     @products = products
-    @line_processing = line_processing_class
+    @line_processing_class = line_processing_class
   end
 
-  def make_order()
+  def process()
     order.order_items.each do |item|
-      qty_list, num_items, pack_list = prepare(item)
-      p num_items
-      lp = line_processing.new(num_items, qty_list)
-      lp.process_order_line
-      items, quantities = lp.results
-      p items
-      p quantities
-      p determine_subtotal(items, quantities, pack_list)
+      qty_list, num_items, pack_list, code = prepare(item)
+
+      line = line_processing_class.new(num_items, qty_list)
+      line.process_order_line
+      items, quantities = line.results
+      line_result       = Hash[items.zip quantities]
+
+      print_output(num_items, code, line_result, pack_list)
     end
   end
 
   private
 
   def prepare(item)
-    code = item.code
-    p code
+    code      = item.code
     pack_list = products.filter(code)[0].packs
-    qty_list = pack_qty_values(pack_list)
+    qty_list  = pack_qty_values(pack_list)
     num_items = item.quantity
-    [qty_list, num_items, pack_list]
+
+    return [qty_list, num_items, pack_list, code]
   end
 
-  def determine_subtotal(items, quantities, pack_list)
+  def pack_qty_values(pack_list)
+    pack_list.collect { |pack| pack.quantity }
+  end
+
+  def determine_subtotal(line_result, pack_list)
     subtotal = 0
-    h = Hash[items.zip quantities]
-    p h
     pack_list.each do |pack|
-      h.each_pair do |qty, times|
+      line_result.each_pair do |qty, times|
         if pack.quantity == qty && times
           subtotal += pack.price * times
         end
@@ -45,7 +47,15 @@ class OrderProcessing
     subtotal.round(2)
   end
 
-  def pack_qty_values(pack_list)
-    pack_list.collect { |pack| pack.quantity }
+  def print_output(num_items, code, line_result, pack_list)
+    subtotal = determine_subtotal(line_result, pack_list)
+    print "#{num_items} #{code} $#{subtotal}\n"
+    line_result.each_pair do |q, times|
+      pack_list.each do |pack|
+        if pack.quantity == q && times && times != 0
+          print "\t #{times} x #{q} $#{pack.price}\n"
+        end
+      end
+    end
   end
 end

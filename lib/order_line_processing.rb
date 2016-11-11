@@ -16,7 +16,6 @@ class OrderLineProcessing
 
     loop do
       if current >= items.count
-      #  p "--------NEXT ITERATION---------"
         current = next_iteration()
         return "invalid input" if !current
       end
@@ -27,19 +26,12 @@ class OrderLineProcessing
          @quantities[current] = 0
       end
       @results[current] = calculate_results(current)
-      # p "--------#{current}---------"
-      # p items
-      # p @quantities
-      # p @results
       current += 1
       break if first_result_founded?
     end
   end
 
   def results
-    p items
-    p @quantities
-    p @results
     return [items, @quantities]
   end
 
