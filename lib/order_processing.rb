@@ -1,4 +1,6 @@
 class OrderProcessing
+  NUMBER_OF_DECIMALS = 2
+
   attr_accessor :order, :products, :line_processing_class
 
   def initialize(order, products, line_processing_class = OrderLineProcessing)
@@ -9,26 +11,46 @@ class OrderProcessing
 
   def process
     order.items.each do |item|
-      prepare(item)
-      @result = process_item()
-      print_output()
+      begin
+        prepare(item)
+        @result = process_item()
+        print_output()
+      rescue Exception => e
+        p " There was an error processing the item '#{item.to_s}' "
+        p e.message
+      end
     end
   end
 
   private
+
+  def prepare(item)
+    @code      = item.code
+    find_packs()
+    @qty_list  = pack_qty_values()
+    @num_items = item.quantity
+    is_num_items_ok?()
+  end
+
+  def find_packs
+    begin
+      @pack_list = products.filter(@code)[0].packs
+    rescue
+      raise ArgumentError.new(" Product code can't be found: '#{@code}' ")
+    end
+  end
+
+  def is_num_items_ok?
+    if @qty_list.min > @num_items
+      raise ArgumentError.new(" Number of items can't be less than the smallest pack ")
+    end
+  end
 
   def process_item
     line                     = line_processing_class.new(@num_items, @qty_list)
     line.process_order_line
     items, quantities        = line.results
     return Hash[items.zip quantities]
-  end
-
-  def prepare(item)
-    @code      = item.code
-    @pack_list = products.filter(@code)[0].packs
-    @qty_list  = pack_qty_values()
-    @num_items = item.quantity
   end
 
   def pack_qty_values
@@ -44,7 +66,7 @@ class OrderProcessing
         end
       end
     end
-    subtotal.round(2)
+    subtotal.round(NUMBER_OF_DECIMALS)
   end
 
   def print_output

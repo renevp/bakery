@@ -37,6 +37,6 @@ class ProductsPacksFactory
   end
 
   def is_pack_error?(pack, product_code)
-    pack[:code] != product_code || pack[:quantity].to_i < MIN_QTY_PER_PACK || pack[:code].strip.empty? 
+    pack[:code] != product_code || pack[:quantity].to_i < MIN_QTY_PER_PACK || pack[:code].strip.empty?
   end
 end

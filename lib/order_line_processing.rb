@@ -4,18 +4,19 @@ class OrderLineProcessing
   def initialize(max_items, items)
     @max_items = max_items
     @items     = items.sort.reverse
+    @error     = ""
   end
 
   def process_order_line
     @quantities = []
     @results    = []
-    return "invalid input" unless is_items_ok?
+    return display_error() if is_items_error?
     @remaining  = max_items
     current     = 0
     loop do
       if current >= items.count
         current = start_over()
-        return "invalid input" if !current
+        return display_error() if !current
       end
       calculate_quantity_for_item(current)
       current += 1
@@ -24,10 +25,17 @@ class OrderLineProcessing
   end
 
   def results
-    return [items, @quantities]
+    if @error.empty?
+      return [items, @quantities]
+    end
+    return @error
   end
 
   private
+
+  def display_error
+    @error = "There is not solution for #{items} and #{max_items}"
+  end
 
   def calculate_quantity_for_item(current)
     if @remaining >= items[current]
@@ -78,8 +86,8 @@ class OrderLineProcessing
     @remaining / items[current]
   end
 
-  def is_items_ok?
-   max_items >= items.min
+  def is_items_error?
+   max_items < items.min || items.include?(0)
   end
 
 

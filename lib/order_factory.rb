@@ -1,7 +1,4 @@
-require 'ostruct'
-
 class OrderFactory
-  MIN_ORDER_QTY = 1
 
   def initialize(order_data, order_class = Order, item_class=OrderItem)
     @order_data  = order_data
@@ -20,10 +17,13 @@ class OrderFactory
   end
 
   def create_item(item)
-    @item_class.new(item[:quantity].to_i, item[:code]) if is_item_ok?(item)
+    begin
+      @item_class.new(item[:quantity], item[:code])
+    rescue Exception => e
+      p " There was an error creating the item '#{item}' "
+      p e.message
+      return nil
+    end
   end
 
-  def is_item_ok?(item)
-    !(item[:code].strip.empty? || item[:quantity].to_i < MIN_ORDER_QTY)
-  end
 end
