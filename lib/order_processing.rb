@@ -16,7 +16,7 @@ class OrderProcessing
         @result = process_item()
         print_output()
       rescue Exception => e
-        p " There was an error processing the item '#{item.to_s}' "
+        p " There was an error processing the item '#{item}' "
         p e.message
       end
     end
