@@ -7,11 +7,14 @@ require_relative 'product'
 require_relative 'order_factory'
 require_relative 'order_item'
 require_relative 'order_line_processing'
+require_relative 'order_line_processing_v2'
+require_relative 'solution_finder'
+require_relative 'order_processing_all_solutions'
 
 class Bakery
   attr_accessor :order_processing_class
 
-  def initialize(order_processing_class=OrderProcessing)
+  def initialize(order_processing_class=OrderProcessingAllSolutions)
     @order_processing_class = order_processing_class
   end
 
@@ -29,7 +32,7 @@ class Bakery
   def main
     products         = load_products()
     order            = get_order()
-    order_processing = order_processing_class.new(order, products)
+    order_processing = order_processing_class.new(order, products, SolutionsFinder)
     order_processing.process()
   end
 end
